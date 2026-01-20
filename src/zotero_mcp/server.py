@@ -676,9 +676,12 @@ def create_review(
         # 2. Load HTML template
         template = load_template(template_name)
         if not template:
-            # Fallback: use basic template
-            ctx.warn(f"Template '{template_name}' not found, using basic format")
-            template = _get_basic_template()
+            return (
+                f"Error: Template '{template_name}_template.html' not found.\n"
+                f"Please ensure the template exists in:\n"
+                f"  - ~/.zotero-mcp/prompts/{template_name}_template.html (user config)\n"
+                f"  - or package default_prompts/ directory"
+            )
         
         # 3. Render the review
         html_content = render_review(template, metadata, analysis)
@@ -702,20 +705,6 @@ def create_review(
     except Exception as e:
         ctx.error(f"Error creating review: {e}")
         return f"Error creating review: {e}"
-
-
-def _get_basic_template() -> str:
-    """Return a basic fallback template when no template file found."""
-    # This is only used as last resort - prefer loading from default_prompts/
-    return '''<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-<h1>Review: ${title}</h1>
-<p><strong>Authors:</strong> ${authors}</p>
-<p><strong>Year:</strong> ${year}</p>
-<hr/>
-<h2>Analysis</h2>
-<p>${contribution}</p>
-<p>${gaps}</p>
-</div>'''
 
 
 # -----------------------------------------------------------------------------
