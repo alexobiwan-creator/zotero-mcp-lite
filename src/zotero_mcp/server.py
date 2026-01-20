@@ -789,18 +789,34 @@ DEFAULT_COMPARATIVE_REVIEW_PROMPT = """Synthesize a comparative review for paper
 For EACH paper:
 1. Call `zotero_get_item_metadata(key)` for bibliographic info
 2. Call `zotero_get_item_children(key)` for annotations
+3. If no annotations, call `zotero_get_item_fulltext(key)` for content
 
 ## Phase 2: Comparative Analysis
 
-Create a synthesis covering:
-1. **Papers Overview** - Title, authors, year for each
-2. **Themes** - Common topics across papers
-3. **Methods** - How approaches differ
-4. **Consensus** - Where authors agree
-5. **Conflicts** - Disagreements or tensions
-6. **Evolution** - How the field has evolved
-7. **Gaps** - Shared limitations
-8. **Synthesis** - Overall narrative
+Create a **table-rich** synthesis:
+
+### 2.1 Executive Summary (2-3 sentences)
+
+### 2.2 Papers Overview Table
+| Paper | Authors | Year | Focus | Key Innovation |
+
+### 2.3 Methods Comparison Table
+| Approach | Papers Using | Strengths | Limitations |
+
+### 2.4 Key Findings Comparison
+| Paper | Main Finding | Evidence/Metrics |
+
+### 2.5 Consensus & Conflicts
+
+### 2.6 Research Evolution (timeline)
+
+### 2.7 Challenges & Solutions Table
+| Challenge | Papers Mentioning | Proposed Solutions |
+
+### 2.8 Insights
+- For Researchers | For Practitioners | Research Gaps
+
+### 2.9 Synthesis
 
 ## Phase 3: Note Creation
 
@@ -813,13 +829,15 @@ If user agrees, call `zotero_create_review` with the analysis:
 zotero_create_review(
     item_key="{first_key}",
     analysis={{
-        "papers": "Paper 1: ...; Paper 2: ...",
-        "themes": "Common themes include...",
-        "methods": "Methodological differences...",
+        "summary": "Executive summary...",
+        "papers": "Paper overview table...",
+        "methods": "Methods comparison table...",
+        "findings": "Key findings table...",
         "consensus": "Authors agree on...",
         "conflicts": "Key debates include...",
-        "evolution": "The field has evolved...",
-        "gaps": "Shared limitations...",
+        "evolution": "Timeline: ...",
+        "challenges": "Challenges and solutions table...",
+        "insights": "For researchers:... For practitioners:...",
         "synthesis": "Overall, these papers..."
     }},
     template_name="comparative_review"
