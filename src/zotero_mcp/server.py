@@ -42,6 +42,97 @@ mcp = FastMCP("Zotero")
 
 
 # -----------------------------------------------------------------------------
+# Workflow Discovery Tool
+# -----------------------------------------------------------------------------
+
+@mcp.tool(
+    name="zotero_suggest_workflow",
+    description=(
+        "Get recommended workflow for a research task. "
+        "Call this FIRST when user requests literature review, comparative analysis, or bibliography export. "
+        "Returns the prompt name to invoke and step-by-step instructions."
+    )
+)
+def suggest_workflow(
+    task: str,
+    *,
+    ctx: Context
+) -> str:
+    """Suggest the best workflow/prompt for a research task."""
+    task_lower = task.lower()
+    
+    workflows = {
+        "literature_review": {
+            "triggers": ["literature review", "review paper", "analyze paper", "paper analysis", "single paper"],
+            "prompt": "/literature_review",
+            "description": "Deep academic analysis of a single paper",
+            "steps": [
+                "1. Invoke /literature_review prompt with the item_key",
+                "2. The prompt will guide you through metadata retrieval, annotation check, and structured analysis",
+                "3. Analysis fields: objective, background, methods, contribution, gaps, discussion, quotes, to_read",
+                "4. Use zotero_create_review to save the formatted note"
+            ]
+        },
+        "comparative_review": {
+            "triggers": ["comparative", "compare papers", "multiple papers", "synthesis", "comparison"],
+            "prompt": "/comparative_review",
+            "description": "Synthesize and compare multiple papers",
+            "steps": [
+                "1. Invoke /comparative_review prompt with list of item_keys",
+                "2. The prompt guides multi-paper analysis with tables and debate model",
+                "3. Creates comprehensive synthesis covering consensus, conflicts, and insights",
+                "4. Use zotero_create_review with template_name='comparative_review'"
+            ]
+        },
+        "bibliography": {
+            "triggers": ["bibliography", "citation", "bibtex", "reference list", "cite"],
+            "prompt": "/bibliography_export",
+            "description": "Export formatted citations and BibTeX",
+            "steps": [
+                "1. Invoke /bibliography_export prompt with item_keys",
+                "2. Generates formatted citations in multiple styles",
+                "3. Provides BibTeX entries for LaTeX users"
+            ]
+        },
+        "discovery": {
+            "triggers": ["explore", "discover", "find related", "knowledge", "topic"],
+            "prompt": "/knowledge_discovery",
+            "description": "Explore your knowledge base on a topic",
+            "steps": [
+                "1. Invoke /knowledge_discovery prompt with your query",
+                "2. Searches across papers, annotations, and notes",
+                "3. Synthesizes what you've learned about the topic"
+            ]
+        }
+    }
+    
+    # Find matching workflow
+    for name, workflow in workflows.items():
+        if any(trigger in task_lower for trigger in workflow["triggers"]):
+            result = [
+                f"# Recommended Workflow: {workflow['description']}",
+                "",
+                f"**Invoke prompt:** `{workflow['prompt']}`",
+                "",
+                "## Steps:",
+            ]
+            result.extend(workflow["steps"])
+            return "\n".join(result)
+    
+    # No specific match - list all available
+    result = [
+        "# Available Research Workflows",
+        "",
+        "Invoke the appropriate prompt for your task:",
+        "",
+    ]
+    for name, workflow in workflows.items():
+        result.append(f"- **{workflow['prompt']}**: {workflow['description']}")
+    
+    return "\n".join(result)
+
+
+# -----------------------------------------------------------------------------
 # Search & Navigation Tools (6)
 # -----------------------------------------------------------------------------
 
@@ -50,7 +141,8 @@ mcp = FastMCP("Zotero")
     description=(
         "Search your reference library for papers, articles, books, or notes by keyword. "
         "Default searches title/author/year; use qmode='everything' to search full text and note contents. "
-        "Returns item keys for get_item_metadata (details) or get_item_children (highlights/notes)."
+        "Returns item keys for get_item_metadata (details) or get_item_children (highlights/notes). "
+        "TIP: For literature review or comparative analysis, call zotero_suggest_workflow first."
     )
 )
 def search_items(
@@ -327,8 +419,8 @@ def search_annotations(
     description=(
         "Get complete bibliographic metadata for academic citation and analysis. "
         "Returns: title, authors, abstract, journal/venue, DOI, publication date, and tags. "
-        "Use for: literature review analysis, citation generation, paper summarization. "
-        "For reading annotations use get_item_children; for full PDF text use get_item_fulltext."
+        "For reading annotations use get_item_children; for full PDF text use get_item_fulltext. "
+        "TIP: For structured literature review, invoke /literature_review prompt instead of ad-hoc analysis."
     )
 )
 def get_item_metadata(
