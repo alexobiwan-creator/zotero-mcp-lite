@@ -737,10 +737,11 @@ DEFAULT_LITERATURE_REVIEW_PROMPT = """Perform comprehensive academic analysis of
 
 1. Call `zotero_get_item_metadata("{item_key}")` for bibliographic details and abstract.
 2. Call `zotero_get_item_children("{item_key}")` to retrieve annotations and notes.
+3. If no annotations found, call `zotero_get_item_fulltext("{item_key}")` to get the full paper text.
 
 ## Phase 2: Analysis
 
-Based on the paper's metadata and any annotations found, analyze:
+Based on the available content, analyze:
 
 1. **Research Objective** - What is the main research question?
 2. **Research Background** - What context/prior work is mentioned?
@@ -753,7 +754,7 @@ Based on the paper's metadata and any annotations found, analyze:
 
 **Analysis Mode:**
 - If annotations exist: Prioritize the user's highlights and comments
-- If no annotations: Analyze from abstract and metadata
+- If no annotations: Analyze from full text (or abstract if full text unavailable)
 
 ## Phase 3: Note Creation
 
