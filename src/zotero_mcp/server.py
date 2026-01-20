@@ -817,8 +817,11 @@ def comparative_review(item_keys: list[str]) -> str:
     
     Prompt loaded from ~/.zotero-mcp/prompts/comparative_review.md or package defaults.
     """
+    if not item_keys:
+        return "Error: Please provide item_keys. Usage: /comparative_review KEY1 KEY2 KEY3"
+    
     keys_list = ", ".join([f'`{k}`' for k in item_keys])
-    first_key = item_keys[0] if item_keys else "ITEM_KEY"
+    first_key = item_keys[0]
     
     prompt = load_prompt("comparative_review")
     if prompt:
