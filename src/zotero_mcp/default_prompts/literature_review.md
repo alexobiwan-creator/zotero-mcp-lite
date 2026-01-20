@@ -10,52 +10,73 @@ Execute these steps **in order**:
 2. Call `zotero_get_item_children("{item_key}")` to check for annotations.
 3. **ALWAYS** call `zotero_get_item_fulltext("{item_key}")` to get the full paper text.
 
-**You MUST read the full text to provide substantive analysis.** Do not rely solely on the abstract.
+**You MUST read the full text before analysis.** Do not rely solely on the abstract.
 
 ## Phase 2: Deep Analysis
 
-After reading the full text, provide **detailed and substantive** analysis for each field:
+After reading the full text, extract information for each field below.
 
-### Required Analysis Fields (ALL must be filled with real content)
+### Anti-Hallucination Rules (CRITICAL)
 
-| Field | What to Extract | Minimum Requirement |
-|-------|-----------------|---------------------|
-| **objective** | Research question, hypothesis, or goal | 2-3 sentences explaining what the paper aims to achieve |
-| **background** | Literature context, motivation, problem statement | 2-3 sentences on prior work and why this research matters |
-| **methods** | Data sources, methodology, experimental design | 2-3 sentences describing how the research was conducted |
-| **contribution** | Novel findings, key results, performance metrics | 2-3 sentences on what's new and quantitative results if available |
-| **gaps** | Limitations stated by authors, potential weaknesses | 2-3 sentences on what the paper doesn't address |
-| **discussion** | Implications, applications, future directions | 2-3 sentences on broader impact and what comes next |
-| **quotes** | Important sentences worth citing | 2-3 direct quotes with context |
-| **to_read** | Referenced papers worth following up | 2-3 specific paper citations mentioned in the text |
+1. **ONLY extract what is explicitly stated** in the paper
+2. **Quote directly** when possible - use "..." for exact text
+3. **Cite location** - indicate section name (e.g., "from Introduction", "from Section 3.2")
+4. **Never invent** numbers, metrics, author names, or paper titles
+5. **If not found**, write: "Not explicitly discussed in this paper"
+6. **Distinguish facts from inference** - mark any inference with "[Inference]"
 
-**Analysis Quality Guidelines:**
-- Extract **specific details** from the full text, not generic summaries
-- Include **numbers, metrics, and concrete findings** where available
-- For quotes, cite **actual sentences** from the paper
-- For to_read, list **actual paper titles or author names** mentioned
+### Required Analysis Fields
+
+| Field | What to Extract | Source Section |
+|-------|-----------------|----------------|
+| **objective** | Research question or goal stated by authors | Introduction |
+| **background** | Prior work explicitly cited and discussed | Introduction / Related Work |
+| **methods** | Data, methodology, experimental setup described | Methods / Methodology |
+| **contribution** | Results and findings with exact numbers | Results / Findings |
+| **gaps** | Limitations explicitly acknowledged by authors | Discussion / Limitations |
+| **discussion** | Future work mentioned by authors | Conclusion / Future Work |
+| **quotes** | Direct quotes with section reference | Any section |
+| **to_read** | Papers explicitly cited as important | References mentioned in text |
+
+### Output Format
+
+For each field, use this structure:
+```
+[Section: X] "Direct quote or paraphrase" - Your brief explanation
+```
+
+Example:
+```
+objective: [Section: Introduction] "This study aims to develop a framework for..." - The authors seek to create an automated compliance checking system.
+```
+
+### Handling Missing Information
+
+- If a field cannot be filled from the paper: `"Not explicitly discussed in this paper"`
+- If information is implied but not stated: `"[Inference] Based on... it appears that..."`
+- **NEVER fabricate** content to fill empty fields
 
 ## Phase 3: Note Creation
 
 After presenting the analysis, ask:
 "Would you like me to save this review as a note in Zotero?"
 
-If user agrees, call `zotero_create_review` with substantive content in ALL fields:
+If user agrees, call `zotero_create_review`:
 
 ```
 zotero_create_review(
     item_key="{item_key}",
     analysis={
-        "objective": "[Specific research goal extracted from introduction]",
-        "background": "[Prior work and context from literature review section]",
-        "methods": "[Detailed methodology from methods section]",
-        "contribution": "[Key findings with metrics from results section]",
-        "gaps": "[Limitations from discussion/conclusion section]",
-        "discussion": "[Implications and future work from conclusion]",
-        "quotes": "[Direct quotes: 'exact text' - context]",
-        "to_read": "[Author1 (Year) - title; Author2 (Year) - title]"
+        "objective": "[Introduction] 'exact quote' - explanation",
+        "background": "[Related Work] Authors cite X, Y, Z as foundational...",
+        "methods": "[Methods] The study uses... with N=X samples...",
+        "contribution": "[Results] Achieved X% accuracy, Y% precision...",
+        "gaps": "[Limitations] Authors acknowledge...",
+        "discussion": "[Conclusion] Future work includes...",
+        "quotes": "'Quote 1' (Section X); 'Quote 2' (Section Y)",
+        "to_read": "Author1 (Year) cited for X; Author2 (Year) cited for Y"
     }
 )
 ```
 
-**Reminder:** Metadata (title, authors, year, DOI, abstract) is auto-filled from Zotero. Focus your analysis on insights from the FULL TEXT.
+**Reminder:** Metadata is auto-filled from Zotero. Focus on extracting verifiable content from the FULL TEXT with proper citations.
