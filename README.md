@@ -166,9 +166,9 @@ flowchart LR
 | Prompt | Use Case | What It Does |
 |--------|----------|--------------|
 | `knowledge_discovery(query)` | Explore a topic | Searches titles AND your annotations |
-| `literature_review(item_key)` | Deep-dive one paper | Structured analysis with/without annotations |
-| `comparative_review(item_keys)` | Compare papers | Cross-paper synthesis, gaps, consensus |
-| `bibliography_export(item_keys)` | Prepare citations | BibTeX + formatted references |
+| `literature_review(item_key)` | Deep-dive one paper | Structured analysis from annotations or full text |
+| `comparative_review(item_keys)` | Compare papers | Table-rich synthesis with insights |
+| `bibliography_export(item_keys)` | Prepare citations | APA, IEEE, and BibTeX formats |
 
 **Key Features:**
 
@@ -231,15 +231,19 @@ Automatically detects Zotero data directory on Windows, macOS, and Linux.
 
 ## Customizing Prompts
 
-The prompts and HTML templates are fully customizable. After running `zotero-mcp setup`, you'll find configuration files at:
+The prompts and HTML templates are fully customizable. Copy from the package defaults and edit:
 
 ```
 ~/.zotero-mcp/prompts/
-├── literature_review.md           # Prompt instructions
+├── literature_review.md           # Single paper analysis prompt
 ├── literature_review_template.html # HTML note template
-├── comparative_review.md
-└── comparative_review_template.html
+├── comparative_review.md          # Multi-paper comparison prompt
+├── comparative_review_template.html
+├── knowledge_discovery.md         # Topic exploration prompt
+└── bibliography_export.md         # Citation export prompt
 ```
+
+**Loading order:** User files (`~/.zotero-mcp/prompts/`) take priority over package defaults.
 
 #### How Template Engine Works
 
