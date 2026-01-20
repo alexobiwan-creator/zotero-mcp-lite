@@ -2,81 +2,99 @@
 
 Perform comprehensive academic analysis of paper {item_key}.
 
-## Phase 1: Information Gathering (MANDATORY)
+## Phase 1: Smart Information Gathering
 
 Execute these steps **in order**:
 
 1. Call `zotero_get_item_metadata("{item_key}")` for bibliographic details.
-2. Call `zotero_get_item_children("{item_key}")` to check for annotations.
-3. **ALWAYS** call `zotero_get_item_fulltext("{item_key}")` to get the full paper text.
+2. Call `zotero_get_item_children("{item_key}")` to retrieve annotations and notes.
+3. **Conditional fulltext retrieval:**
+   - If annotations are **rich and cover most analysis fields** → Use annotations as primary source
+   - If annotations are **sparse or missing key fields** → Call `zotero_get_item_fulltext("{item_key}")` to supplement
 
-**You MUST read the full text before analysis.** Do not rely solely on the abstract.
+**Prioritize user annotations** - they represent what the user found important. Only fetch fulltext when annotations are insufficient.
 
-## Phase 2: Deep Analysis
+## Phase 2: Concise Analysis
 
-After reading the full text, extract information for each field below.
+Extract information for each field below. **Be concise and direct.**
 
-### Anti-Hallucination Rules (CRITICAL)
+### Anti-Hallucination Rules
 
-1. **ONLY extract what is explicitly stated** in the paper
-2. **Quote directly** when possible - use "..." for exact text
-3. **Cite location** - indicate section name (e.g., "from Introduction", "from Section 3.2")
-4. **Never invent** numbers, metrics, author names, or paper titles
-5. **If not found**, write: "Not explicitly discussed in this paper"
-6. **Distinguish facts from inference** - mark any inference with "[Inference]"
+1. **ONLY extract what is explicitly stated** - no fabrication
+2. **Quote directly** when possible using "..."
+3. **Cite section** - e.g., "[Intro]", "[Methods]", "[Results]"
+4. **If not found**: "Not discussed"
+5. **If inferred**: Mark with "[Inference]"
 
-### Required Analysis Fields
+### Required Fields
 
-| Field | What to Extract | Source Section |
-|-------|-----------------|----------------|
-| **objective** | Research question or goal stated by authors | Introduction |
-| **background** | Prior work explicitly cited and discussed | Introduction / Related Work |
-| **methods** | Data, methodology, experimental setup described | Methods / Methodology |
-| **contribution** | Results and findings with exact numbers | Results / Findings |
-| **gaps** | Limitations explicitly acknowledged by authors | Discussion / Limitations |
-| **discussion** | Future work mentioned by authors | Conclusion / Future Work |
-| **quotes** | Direct quotes with section reference | Any section |
-| **to_read** | Papers explicitly cited as important | References mentioned in text |
+| Field | Extract | Source | Format |
+|-------|---------|--------|--------|
+| **objective** | Research question/goal | Introduction | Max 50 words |
+| **background** | Key prior work cited | Intro/Related Work | Max 50 words |
+| **methods** | Methodology + **sample size** + **data source** | Methods | Max 60 words |
+| **contribution** | Key findings with **exact metrics** | Results | Max 60 words |
+| **gaps** | Limitations stated by authors | Discussion | Max 50 words |
+| **discussion** | Future work directions | Conclusion | Max 50 words |
+| **quotes** | 2-3 key sentences worth citing | Any | Direct quotes only |
+| **to_read** | Gap-filling references | Text | Why worth reading |
 
-### Output Format
+### Output Rules
 
-For each field, use this structure:
+1. **Max 50-60 words per field** (except quotes)
+2. **No filler phrases** - avoid "The authors mention...", "This paper discusses..."
+3. **Lead with the insight**, not the source
+4. **Include numbers** when available (N=, %, accuracy, etc.)
+
+### Format Examples
+
+**Good:**
 ```
-[Section: X] "Direct quote or paraphrase" - Your brief explanation
+methods: [Methods] Survey of N=500 construction workers; image dataset of 2,847 site photos; YOLOv5 for detection.
 ```
 
-Example:
+**Bad (too verbose):**
 ```
-objective: [Section: Introduction] "This study aims to develop a framework for..." - The authors seek to create an automated compliance checking system.
+methods: [Methods] The authors describe their methodology in detail. They conducted a survey... (continues for 150 words)
+```
+
+### to_read Field: Gap-Filling References
+
+Don't just list papers. Explain **why** each is worth reading:
+
+```
+to_read: 
+- Wang (2023): Provides safety inspection dataset this paper lacks
+- Chen (2022): Alternative approach using transformers, compare accuracy
 ```
 
 ### Handling Missing Information
 
-- If a field cannot be filled from the paper: `"Not explicitly discussed in this paper"`
-- If information is implied but not stated: `"[Inference] Based on... it appears that..."`
-- **NEVER fabricate** content to fill empty fields
+- Not found: `"Not discussed"`
+- Implied only: `"[Inference] ..."`
+- **Never fabricate** to fill gaps
 
 ## Phase 3: Note Creation
 
-After presenting the analysis, ask:
+After presenting analysis, ask:
 "Would you like me to save this review as a note in Zotero?"
 
-If user agrees, call `zotero_create_review`:
+If yes, call `zotero_create_review`:
 
 ```
 zotero_create_review(
     item_key="{item_key}",
     analysis={
-        "objective": "[Introduction] 'exact quote' - explanation",
-        "background": "[Related Work] Authors cite X, Y, Z as foundational...",
-        "methods": "[Methods] The study uses... with N=X samples...",
-        "contribution": "[Results] Achieved X% accuracy, Y% precision...",
-        "gaps": "[Limitations] Authors acknowledge...",
-        "discussion": "[Conclusion] Future work includes...",
-        "quotes": "'Quote 1' (Section X); 'Quote 2' (Section Y)",
-        "to_read": "Author1 (Year) cited for X; Author2 (Year) cited for Y"
+        "objective": "[Intro] Develop automated compliance checking for construction sites.",
+        "background": "[Related Work] Builds on YOLO-based detection (Redmon 2016) and safety ontologies (Zhang 2021).",
+        "methods": "[Methods] N=500 site images; few-shot learning with 5-shot setup; YOLOv5 backbone.",
+        "contribution": "[Results] 88.2% precision, 79.5% recall for object detection; 94.8% for attributes.",
+        "gaps": "[Limitations] Limited to fall hazards; no real-time deployment tested.",
+        "discussion": "[Conclusion] Extend to other hazard types; integrate with BIM systems.",
+        "quotes": "'Few-shot learning reduces annotation burden by 80%' [Results]",
+        "to_read": "Li (2024): Multi-agent approach for comparison; OSHA dataset for validation"
     }
 )
 ```
 
-**Reminder:** Metadata is auto-filled from Zotero. Focus on extracting verifiable content from the FULL TEXT with proper citations.
+**Reminder:** Metadata (title, authors, DOI, abstract) auto-filled from Zotero. Focus on concise, verifiable insights.
