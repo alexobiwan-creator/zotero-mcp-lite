@@ -116,14 +116,6 @@ This detects your Zotero installation and configures MCP clients automatically.
 
 That's it! You're ready to use Zotero with AI assistants.
 
-## Design Principles
-
-- **Atomic tools**: Each tool does one thing well. LLM composes them as needed.
-- **Template engine**: LLM outputs structured JSON; system handles HTML formatting for consistent, professional notes.
-- **Customizable workflows**: Prompts and templates are user-editable files, not hardcoded logic.
-- **Direct SQLite access**: Millisecond-level annotation queries without API overhead.
-- **Minimal dependencies**: Only essential packages for maximum compatibility.
-
 ## Features
 
 ### 10 Atomic MCP Tools
