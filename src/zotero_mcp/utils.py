@@ -1,12 +1,17 @@
 import re
 
+import mistune
+
 _HTML_TAG_RE = re.compile(r"<.*?>")
 # Pattern to detect actual HTML structure - requires closing tag or self-closing
 # Matches: <p>, <p class="x">, <br/>, <br /> but NOT: <p> as plain text mention
 _HTML_STRUCTURE_RE = re.compile(
-    r"<(p|div|span|br|h[1-6]|ul|ol|li|a|strong|em|b|i)(?:\s[^>]*)?>.*?</\1>|<br\s*/?>",
+    r"<(p|div|span|br|h[1-6]|ul|ol|li|a|strong|em|b|i|table|tr|td|th)(?:\s[^>]*)?>.*?</\1>|<br\s*/?>",
     re.IGNORECASE | re.DOTALL
 )
+
+# Markdown renderer with table and strikethrough support
+_markdown = mistune.create_markdown(plugins=['table', 'strikethrough'])
 
 
 def extract_year(date_str: str) -> str:
@@ -71,20 +76,25 @@ def clean_html(raw_html: str) -> str:
 
 def text_to_html(content: str) -> str:
     """
-    Convert plain text to HTML for Zotero notes.
+    Convert text/markdown to HTML for Zotero notes.
 
-    If content already contains HTML structure, returns it unchanged.
-    Uses pattern matching to detect actual HTML tags, not just substrings.
+    Handles:
+    - Markdown tables, lists, bold, italic, headers, blockquotes
+    - Plain text with line breaks
+    - Already-formatted HTML (passed through unchanged)
 
     Args:
-        content: Plain text or HTML content.
+        content: Plain text, markdown, or HTML content.
 
     Returns:
-        HTML-formatted string.
+        HTML-formatted string suitable for Zotero notes.
     """
-    # Check for actual HTML structure (tags like <p>, <div>, <span>, etc.)
+    if not content or not content.strip():
+        return ""
+    
+    # Check for actual HTML structure - pass through unchanged
     if _HTML_STRUCTURE_RE.search(content):
         return content
-    paragraphs = content.split("\n\n")
-    html_parts = ["<p>" + p.replace("\n", "<br/>") + "</p>" for p in paragraphs]
-    return "".join(html_parts)
+    
+    # Convert markdown to HTML using mistune
+    return _markdown(content)

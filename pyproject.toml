@@ -22,6 +22,7 @@ dependencies = [
     "PyMuPDF>=1.24.0",
     "python-dotenv>=1.0.0",
     "httpx>=0.24.0",
+    "mistune>=3.0.0",
 ]
 
 [project.optional-dependencies]
@@ -52,7 +53,6 @@ packages = ["src/zotero_mcp"]
 include = [
     "src/zotero_mcp/**/*.py",
     "src/zotero_mcp/**/*.md",
-    "src/zotero_mcp/**/*.html",
 ]
 
 [tool.black]

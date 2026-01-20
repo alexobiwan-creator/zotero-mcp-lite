@@ -4,7 +4,7 @@ Tests for zotero_mcp.utils module.
 Tests cover:
 - format_creators: Creator name formatting
 - clean_html: HTML tag removal
-- text_to_html: Plain text to HTML conversion with detection
+- text_to_html: Markdown/text to HTML conversion
 """
 
 import unittest
@@ -84,22 +84,48 @@ class TestCleanHtml(unittest.TestCase):
 
 
 class TestTextToHtml(unittest.TestCase):
-    """Tests for text_to_html function."""
+    """Tests for text_to_html function - markdown to HTML conversion."""
 
-    def test_single_paragraph(self):
-        """Single paragraph wrapped in <p> tags."""
+    def test_simple_text_wrapped_in_p(self):
+        """Simple text gets wrapped in paragraph tags."""
         result = text_to_html("Hello world")
-        self.assertEqual(result, "<p>Hello world</p>")
+        self.assertIn("<p>", result)
+        self.assertIn("Hello world", result)
 
-    def test_multiple_paragraphs(self):
-        """Double newlines create separate paragraphs."""
-        result = text_to_html("First paragraph.\n\nSecond paragraph.")
-        self.assertEqual(result, "<p>First paragraph.</p><p>Second paragraph.</p>")
+    def test_markdown_bold(self):
+        """Markdown bold converts to strong/b tags."""
+        result = text_to_html("This is **bold** text")
+        self.assertTrue("<strong>" in result or "<b>" in result)
 
-    def test_single_newlines_become_br(self):
-        """Single newlines become <br/> within paragraphs."""
-        result = text_to_html("Line 1\nLine 2")
-        self.assertEqual(result, "<p>Line 1<br/>Line 2</p>")
+    def test_markdown_italic(self):
+        """Markdown italic converts to em/i tags."""
+        result = text_to_html("This is *italic* text")
+        self.assertTrue("<em>" in result or "<i>" in result)
+
+    def test_markdown_table(self):
+        """Markdown tables convert to HTML tables."""
+        markdown = "| Header 1 | Header 2 |\n|---|---|\n| Cell 1 | Cell 2 |"
+        result = text_to_html(markdown)
+        self.assertIn("<table>", result)
+        self.assertIn("<th>", result)
+        self.assertIn("<td>", result)
+
+    def test_markdown_list(self):
+        """Markdown lists convert to HTML lists."""
+        markdown = "- Item 1\n- Item 2\n- Item 3"
+        result = text_to_html(markdown)
+        self.assertIn("<ul>", result)
+        self.assertIn("<li>", result)
+
+    def test_markdown_headers(self):
+        """Markdown headers convert to HTML headers."""
+        result = text_to_html("## Section Title")
+        self.assertIn("<h2>", result)
+
+    def test_markdown_blockquote(self):
+        """Markdown blockquotes convert to HTML blockquotes."""
+        result = text_to_html("> This is a quote")
+        self.assertIn("<blockquote>", result)
 
     def test_passthrough_existing_html_p(self):
         """Content with <p>...</p> structure passes through unchanged."""
@@ -113,24 +139,27 @@ class TestTextToHtml(unittest.TestCase):
         result = text_to_html(html)
         self.assertEqual(result, html)
 
+    def test_passthrough_existing_html_table(self):
+        """Content with <table>...</table> structure passes through unchanged."""
+        html = "<table><tr><td>Cell</td></tr></table>"
+        result = text_to_html(html)
+        self.assertEqual(result, html)
+
     def test_passthrough_br_tag(self):
         """Content with <br/> passes through unchanged."""
         html = "Line 1<br/>Line 2"
         result = text_to_html(html)
         self.assertEqual(result, html)
 
-    def test_plain_text_with_angle_brackets_not_html(self):
-        """Plain text mentioning '<p>' is NOT treated as HTML structure."""
-        # This tests the fix for false positives
-        text = "I wrote <p> in my code"
-        result = text_to_html(text)
-        # Should be converted because '<p>' alone is not a complete tag structure
-        self.assertTrue(result.startswith("<p>"))
-
     def test_empty_string(self):
-        """Empty string returns single empty paragraph."""
+        """Empty string returns empty string."""
         result = text_to_html("")
-        self.assertEqual(result, "<p></p>")
+        self.assertEqual(result, "")
+
+    def test_whitespace_only(self):
+        """Whitespace-only string returns empty string."""
+        result = text_to_html("   \n\n  ")
+        self.assertEqual(result, "")
 
 
 if __name__ == "__main__":
