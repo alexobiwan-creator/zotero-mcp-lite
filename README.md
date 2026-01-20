@@ -1,5 +1,11 @@
 # Zotero MCP Lite
 
+[![Zotero 7](https://img.shields.io/badge/Zotero-7-CC2936?logo=zotero&logoColor=white)](https://www.zotero.org/)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![MCP](https://img.shields.io/badge/MCP-Compatible-5A67D8?logo=anthropic&logoColor=white)](https://modelcontextprotocol.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![uv](https://img.shields.io/badge/uv-Fast_Package_Manager-DE5FE9?logo=astral&logoColor=white)](https://docs.astral.sh/uv/)
+
 A high-performance Model Context Protocol (MCP) server for Zotero with customizable research workflows.
 
 - **Full Local** - No cloud, no API key; runs entirely via Zotero Desktop
