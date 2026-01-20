@@ -705,24 +705,16 @@ def create_review(
 
 
 def _get_basic_template() -> str:
-    """Return a basic fallback template."""
+    """Return a basic fallback template when no template file found."""
+    # This is only used as last resort - prefer loading from default_prompts/
     return '''<div style="font-family: Arial, sans-serif; line-height: 1.6;">
 <h1>Review: ${title}</h1>
 <p><strong>Authors:</strong> ${authors}</p>
 <p><strong>Year:</strong> ${year}</p>
-<p><strong>Journal:</strong> ${publicationTitle}</p>
-<p><strong>DOI:</strong> ${DOI}</p>
-<hr/>
-<h2>Abstract</h2>
-<p>${abstractNote}</p>
 <hr/>
 <h2>Analysis</h2>
-<h3>Contribution</h3>
 <p>${contribution}</p>
-<h3>Research Gaps</h3>
 <p>${gaps}</p>
-<h3>Methods</h3>
-<p>${methods}</p>
 </div>'''
 
 
@@ -740,22 +732,12 @@ def knowledge_discovery(query: str) -> str:
     """
     Explore your personal knowledge base on a topic.
     
-    Searches paper titles/abstracts AND your PDF annotations to find
-    forgotten knowledge and cross-paper connections.
+    Prompt loaded from ~/.zotero-mcp/prompts/knowledge_discovery.md or package defaults.
     """
-    return f"""Explore my Zotero library for knowledge about "{query}":
-
-1. Call `zotero_search_items("{query}")` to find papers with relevant titles/abstracts.
-
-2. Call `zotero_search_annotations("{query}")` to find my highlights and comments.
-
-3. Synthesize findings:
-   - Which papers did I read on this topic?
-   - What did I highlight as important?
-   - What comments did I leave?
-   - Are there insights I might have forgotten?
-
-Present a summary of what my knowledge base contains on "{query}"."""
+    prompt = load_prompt("knowledge_discovery")
+    if prompt:
+        return prompt.replace("{query}", query)
+    return f"Error: knowledge_discovery prompt not found for query '{query}'"
 
 
 @mcp.prompt()
@@ -789,16 +771,14 @@ def comparative_review(item_keys: list[str]) -> str:
 
 @mcp.prompt()
 def bibliography_export(item_keys: list[str]) -> str:
-    """Export formatted citations and BibTeX for selected papers."""
+    """
+    Export formatted citations and BibTeX for selected papers.
+    
+    Prompt loaded from ~/.zotero-mcp/prompts/bibliography_export.md or package defaults.
+    """
     keys_list = ", ".join([f'`{k}`' for k in item_keys])
     
-    return f"""Export citations for papers: {keys_list}
-
-For each paper, call `zotero_get_item_metadata(key, include_bibtex=True)`.
-
-Output for each:
-1. **In-text citation**: (Author, Year)
-2. **Full reference**: APA-style
-3. **BibTeX entry**: For LaTeX
-
-Reminder: Add the "Cited" tag to these items in Zotero Desktop to track citation status."""
+    prompt = load_prompt("bibliography_export")
+    if prompt:
+        return prompt.replace("{keys_list}", keys_list)
+    return f"Error: bibliography_export prompt not found for papers {keys_list}"

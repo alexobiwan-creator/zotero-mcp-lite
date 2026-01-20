@@ -75,9 +75,13 @@ def create_item_local(items: list[dict], timeout: float = 10.0) -> dict:
     Raises:
         httpx.HTTPError: If the request fails.
         ConnectionError: If Zotero is not running.
+    
+    Environment variables:
+        ZOTERO_CONNECTOR_LIBRARY_ID: Library ID for Connector API (default 1)
     """
+    library_id = int(os.getenv("ZOTERO_CONNECTOR_LIBRARY_ID", "1"))
     payload = {
-        "libraryID": 1,
+        "libraryID": library_id,
         "items": items,
     }
     
