@@ -4,12 +4,10 @@ User request: {paper}
 
 ## Step 1: Find the Paper
 
-First, identify which paper to review:
-
-- If user mentions a title/topic → Use `zotero_search_items(query)` to find it
-- If user says "recent paper" or "paper I just added" → Use `zotero_get_recent(limit=1)`
-- If user provides an item key directly → Use that key
-- If unclear → Ask the user which paper to review
+- If user mentions a title/topic → Use `zotero_search_items(query)`
+- If user says "recent paper" → Use `zotero_get_recent(limit=1)`
+- If user provides an item key → Use that key
+- If unclear → Ask which paper to review
 
 ## Step 2: Gather Information
 
@@ -17,24 +15,45 @@ First, identify which paper to review:
 2. Call `zotero_get_item_children(item_key)` for annotations
 3. If annotations are sparse, call `zotero_get_item_fulltext(item_key)`
 
-## Step 3: Analysis
+## Step 3: In-Depth Analysis
 
-Analyze the paper under these sections. Use tables, bullet points, or prose as appropriate:
+Analyze the paper thoroughly under these sections. **Be comprehensive** - include specific details, examples, and evidence from the paper.
 
-- **Research Objective** - What problem does this paper solve?
-- **Research Background** - Key prior work and research gap
-- **Research Methods** - How did they do it?
-- **Contribution** - What did they find/achieve?
-- **Research Gaps** - Limitations acknowledged by authors
-- **Discussion** - Future directions and implications
-- **Key Quotes** - Important statements from the paper
-- **To-Read** - Related papers worth reading and why
+**Format guidelines:**
+- Use **tables** for comparisons (methods, results, datasets)
+- Use **bullet points** for lists of findings, contributions, or limitations
+- Use **sub-sections** to organize complex topics
+- Include **specific numbers and metrics** when available
+- Quote **key definitions and formulas** directly
 
-### Rules
+### Required Sections:
 
-- Extract only explicit content from the paper
-- If information not found, write "Not discussed"
+**Research Objective** - What problem? Why important? What gap does it fill?
+
+**Research Background** - Prior work with specific contributions. Show the research timeline/evolution if relevant.
+
+**Research Methods** - Detailed methodology. Consider using a table for:
+| Aspect | Details |
+|--------|---------|
+| Dataset | Name, size, characteristics |
+| Model/Approach | Architecture, key components |
+| Evaluation | Metrics, baselines, protocols |
+
+**Contribution** - Key findings with specific metrics. Use comparisons where applicable.
+
+**Research Gaps** - What limitations do authors acknowledge? What's missing?
+
+**Discussion** - Future directions, implications for the field.
+
+**Key Quotes** - Important statements that define the work.
+
+**To-Read** - Related papers and why they're relevant.
+
+### Quality Rules
+
+- Go deep, not shallow - explain the "why" and "how", not just "what"
 - Never fabricate data or citations
+- If information not found, write "Not discussed in paper"
 
 ## Step 4: Save to Zotero
 

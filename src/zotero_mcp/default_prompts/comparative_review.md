@@ -4,12 +4,10 @@ User request: {papers}
 
 ## Step 1: Identify Papers
 
-First, find the papers the user wants to compare:
-
-- If user mentions paper titles/topics → Use `zotero_search_items(query)` to find them
-- If user says "recent papers" or "papers I just saved" → Use `zotero_get_recent()`
-- If user provides item keys directly → Use those keys
-- If unclear → Ask the user which papers to compare
+- If user mentions titles/topics → Use `zotero_search_items(query)`
+- If user says "recent papers" → Use `zotero_get_recent()`
+- If user provides item keys → Use those keys
+- If unclear → Ask which papers to compare
 
 ## Step 2: Gather Information
 
@@ -17,30 +15,64 @@ For each paper:
 1. Call `zotero_get_item_children(key)` - check for existing review notes
 2. If no reviews, use annotations or call `zotero_get_item_fulltext(key)`
 
-## Step 3: Comparative Analysis
+## Step 3: Comprehensive Comparative Analysis
 
-Create a synthesis covering these sections. Use tables, bullet points, or prose as appropriate:
+Create a **table-rich, in-depth synthesis**. Go beyond surface-level comparisons.
 
-- **Executive Summary** - What do these papers collectively reveal?
-- **Papers Overview** - Table with authors, year, focus, key innovation
-- **Categorization** - Group papers by theme/domain
-- **Methods Comparison** - Compare approaches, strengths, limitations
-- **Key Findings** - Main results from each paper
-- **Consensus** - Where authors agree
-- **Conflicts** - Where authors disagree and why
-- **Research Evolution** - How the field developed across these papers
-- **Challenges & Solutions** - Common problems and proposed solutions
-- **Insights** - Recommendations for researchers and practitioners
-- **Synthesis** - Overall narrative connecting all papers
+**Format requirements:**
+- **Tables are mandatory** for comparisons
+- Use **bullet points** for detailed findings
+- Include **specific metrics and numbers**
+- Show **evidence** for every claim
 
-### Rules
+### Required Sections:
 
-- Cite specific papers when making claims
-- For conflicts, explain WHY authors disagree
+**Executive Summary** - 3-5 sentences capturing the collective insight.
+
+**Papers Overview Table**
+| Paper | Year | Focus | Key Innovation | Main Result |
+|-------|------|-------|----------------|-------------|
+
+**Categorization** - Group papers by theme. Use sub-sections or a table.
+
+**Methods Comparison Table**
+| Approach | Papers | Dataset | Metrics | Strengths | Limitations |
+|----------|--------|---------|---------|-----------|-------------|
+
+**Key Findings Comparison**
+| Paper | Main Finding | Evidence/Numbers | Significance |
+|-------|--------------|------------------|--------------|
+
+**Consensus** - Where do authors agree? Cite specific claims.
+
+**Conflicts & Debates** - Where do they disagree? For each conflict:
+- What exactly differs?
+- Position A: "[Author] claims X because Y"
+- Position B: "[Author] claims Z because W"  
+- Root cause of disagreement
+
+**Research Evolution** - Timeline showing how the field developed.
+
+**Challenges & Solutions Table**
+| Challenge | Papers Mentioning | Solutions Proposed | Effectiveness |
+|-----------|-------------------|-------------------|---------------|
+
+**Insights & Recommendations**
+- For researchers: Future directions
+- For practitioners: Actionable takeaways
+- Research gaps: What remains unanswered
+
+**Synthesis** - Overall narrative connecting all papers.
+
+### Quality Rules
+
+- Every claim must cite a specific paper
+- Use numbers and metrics, not vague statements
+- Explain WHY authors disagree, not just that they do
 - Never fabricate data or citations
 
 ## Step 4: Save to Zotero
 
 Ask: "Save this comparative review to Zotero?"
 
-If yes, call `zotero_create_review` with analysis dict and `template_name="comparative_review"`.
+If yes, call `zotero_create_review` with `template_name="comparative_review"`.
