@@ -31,7 +31,7 @@ Create a synthesis covering:
 - **Insights**
 - **Synthesis**
 
-Be thorough. Use tables for comparisons where helpful. Cite specific papers for every claim. Include metrics and evidence.
+Go deep - surface-level comparisons are not useful. Use tables where helpful. Cite papers for claims. Include specific metrics.
 
 Don't fabricate data or citations.
 

@@ -28,7 +28,7 @@ Write a comprehensive review covering these sections:
 - **Key Quotes**
 - **To-Read**
 
-Be thorough and specific. Use tables, bullet points, or prose as appropriate. Include metrics and evidence when available.
+Go deep - explain the "why" and "how", not just "what". Use tables, bullet points, or prose as you see fit. Include specific metrics and evidence.
 
 Don't fabricate data or citations.
 
