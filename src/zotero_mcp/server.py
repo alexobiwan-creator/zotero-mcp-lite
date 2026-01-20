@@ -730,119 +730,9 @@ def _get_basic_template() -> str:
 # Research Prompts (4) - Guided Academic Workflows
 # -----------------------------------------------------------------------------
 
-# Default prompts (used when user hasn't created custom prompt files)
-DEFAULT_LITERATURE_REVIEW_PROMPT = """Perform comprehensive academic analysis of paper {item_key}:
-
-## Phase 1: Information Gathering
-
-1. Call `zotero_get_item_metadata("{item_key}")` for bibliographic details and abstract.
-2. Call `zotero_get_item_children("{item_key}")` to retrieve annotations and notes.
-3. If no annotations found, call `zotero_get_item_fulltext("{item_key}")` to get the full paper text.
-
-## Phase 2: Analysis
-
-Based on the available content, analyze:
-
-1. **Research Objective** - What is the main research question?
-2. **Research Background** - What context/prior work is mentioned?
-3. **Research Methods** - What methodology is used?
-4. **Contribution** - What are the novel contributions?
-5. **Gaps** - What limitations are identified?
-6. **Discussion** - What are the implications?
-7. **Quotes** - Key findings worth citing
-8. **To-Read** - Related papers mentioned
-
-**Analysis Mode:**
-- If annotations exist: Prioritize the user's highlights and comments
-- If no annotations: Analyze from full text (or abstract if full text unavailable)
-
-## Phase 3: Note Creation
-
-After presenting the analysis, ask:
-"Would you like me to save this review as a note in Zotero?"
-
-If user agrees, call `zotero_create_review` with the analysis as a JSON dict:
-
-```
-zotero_create_review(
-    item_key="{item_key}",
-    analysis={{
-        "objective": "The main research question is...",
-        "background": "This paper builds on...",
-        "methods": "The methodology involves...",
-        "contribution": "The key contributions are...",
-        "gaps": "Limitations include...",
-        "discussion": "The implications are...",
-        "quotes": "Key findings: ...",
-        "to_read": "Related papers: ..."
-    }}
-)
-```
-
-The system will automatically fill in metadata (title, authors, year, DOI, abstract) from Zotero."""
-
-
-DEFAULT_COMPARATIVE_REVIEW_PROMPT = """Synthesize a comparative review for papers: {keys_list}
-
-## Phase 1: Information Gathering
-
-For EACH paper:
-1. Call `zotero_get_item_metadata(key)` for bibliographic info
-2. Call `zotero_get_item_children(key)` for annotations
-3. If no annotations, call `zotero_get_item_fulltext(key)` for content
-
-## Phase 2: Comparative Analysis
-
-Create a **table-rich** synthesis:
-
-### 2.1 Executive Summary (2-3 sentences)
-
-### 2.2 Papers Overview Table
-| Paper | Authors | Year | Focus | Key Innovation |
-
-### 2.3 Methods Comparison Table
-| Approach | Papers Using | Strengths | Limitations |
-
-### 2.4 Key Findings Comparison
-| Paper | Main Finding | Evidence/Metrics |
-
-### 2.5 Consensus & Conflicts
-
-### 2.6 Research Evolution (timeline)
-
-### 2.7 Challenges & Solutions Table
-| Challenge | Papers Mentioning | Proposed Solutions |
-
-### 2.8 Insights
-- For Researchers | For Practitioners | Research Gaps
-
-### 2.9 Synthesis
-
-## Phase 3: Note Creation
-
-After presenting analysis, ask:
-"Would you like me to save this comparative review as a note?"
-
-If user agrees, call `zotero_create_review` with the analysis:
-
-```
-zotero_create_review(
-    item_key="{first_key}",
-    analysis={{
-        "summary": "Executive summary...",
-        "papers": "Paper overview table...",
-        "methods": "Methods comparison table...",
-        "findings": "Key findings table...",
-        "consensus": "Authors agree on...",
-        "conflicts": "Key debates include...",
-        "evolution": "Timeline: ...",
-        "challenges": "Challenges and solutions table...",
-        "insights": "For researchers:... For practitioners:...",
-        "synthesis": "Overall, these papers..."
-    }},
-    template_name="comparative_review"
-)
-```"""
+# Prompts are loaded from:
+# 1. User config: ~/.zotero-mcp/prompts/*.md (takes priority)
+# 2. Package defaults: zotero_mcp/default_prompts/*.md
 
 
 @mcp.prompt()
@@ -873,17 +763,12 @@ def literature_review(item_key: str) -> str:
     """
     Deep academic analysis of a single paper.
     
-    Uses user's custom prompt if available at ~/.zotero-mcp/prompts/literature_review.md
+    Prompt loaded from ~/.zotero-mcp/prompts/literature_review.md or package defaults.
     """
-    # Try to load user's custom prompt
-    custom_prompt = load_prompt("literature_review")
-    
-    if custom_prompt:
-        # Replace {item_key} placeholder in custom prompt
-        return custom_prompt.replace("{item_key}", item_key)
-    
-    # Use default prompt
-    return DEFAULT_LITERATURE_REVIEW_PROMPT.format(item_key=item_key)
+    prompt = load_prompt("literature_review")
+    if prompt:
+        return prompt.replace("{item_key}", item_key)
+    return f"Error: literature_review prompt not found for item {item_key}"
 
 
 @mcp.prompt()
@@ -891,18 +776,15 @@ def comparative_review(item_keys: list[str]) -> str:
     """
     Synthesize multiple papers into a comparative review.
     
-    Uses user's custom prompt if available at ~/.zotero-mcp/prompts/comparative_review.md
+    Prompt loaded from ~/.zotero-mcp/prompts/comparative_review.md or package defaults.
     """
     keys_list = ", ".join([f'`{k}`' for k in item_keys])
     first_key = item_keys[0] if item_keys else "ITEM_KEY"
     
-    # Try to load user's custom prompt
-    custom_prompt = load_prompt("comparative_review")
-    
-    if custom_prompt:
-        return custom_prompt.replace("{keys_list}", keys_list).replace("{first_key}", first_key)
-    
-    return DEFAULT_COMPARATIVE_REVIEW_PROMPT.format(keys_list=keys_list, first_key=first_key)
+    prompt = load_prompt("comparative_review")
+    if prompt:
+        return prompt.replace("{keys_list}", keys_list).replace("{first_key}", first_key)
+    return f"Error: comparative_review prompt not found for papers {keys_list}"
 
 
 @mcp.prompt()
