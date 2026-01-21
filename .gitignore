@@ -15,13 +15,16 @@ build/
 # Virtual environments
 venv/
 env/
-.env
 .venv/
 
 # Testing
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Linting / Type checking
+.mypy_cache/
+.ruff_cache/
 
 # IDE specific files
 .idea/
@@ -38,9 +41,10 @@ nul
 .env
 .env.local
 
-# Claude Code CLI
-.claude/
+# Logs
+*.log
 
-# Cursor
+# Development tool configs
+.claude/
 .cursorignore
 .cursorindexingignore

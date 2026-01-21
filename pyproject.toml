@@ -4,17 +4,21 @@ build-backend = "hatchling.build"
 
 [project]
 name = "zotero-mcp-lite"
-dynamic = ["version"]
+version = "0.1.2"
 authors = [
-  { name = "54yyyu", email = "54yyyu@github.com" },
+  { name = "xmruuu", email = "xmruuu@github.com" },
 ]
-description = "A lightweight Model Context Protocol server for Zotero"
+description = "Fast, Customizable & Light Zotero MCP server for AI research assistants"
 readme = "README.md"
 requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["mcp", "zotero", "claude", "cursor", "research", "ai"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
 ]
 dependencies = [
     "pyzotero>=1.5.0",
@@ -23,6 +27,7 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "httpx>=0.24.0",
     "mistune>=3.0.0",
+    "packaging>=23.0",
 ]
 
 [project.optional-dependencies]
@@ -35,25 +40,16 @@ dev = [
 [project.urls]
 "Homepage" = "https://github.com/xmruuu/zotero-mcp-lite"
 "Bug Tracker" = "https://github.com/xmruuu/zotero-mcp-lite/issues"
-"Original" = "https://github.com/54yyyu/zotero-mcp"
+"Source" = "https://github.com/xmruuu/zotero-mcp-lite"
 
 [project.scripts]
 zotero-mcp = "zotero_mcp.cli:main"
-
-[tool.hatch.version]
-path = "src/zotero_mcp/_version.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/zotero_mcp"]
 
 [tool.hatch.build.targets.wheel.sources]
 "src" = ""
-
-[tool.hatch.build.targets.sdist]
-include = [
-    "src/zotero_mcp/**/*.py",
-    "src/zotero_mcp/**/*.md",
-]
 
 [tool.black]
 line-length = 88

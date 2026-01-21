@@ -1,5 +1,6 @@
 # Zotero MCP Lite
 
+[![PyPI](https://img.shields.io/pypi/v/zotero-mcp-lite?color=blue&logo=pypi&logoColor=white)](https://pypi.org/project/zotero-mcp-lite/)
 [![Zotero 7](https://img.shields.io/badge/Zotero-7-CC2936?logo=zotero&logoColor=white)](https://www.zotero.org/)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-5A67D8?logo=anthropic&logoColor=white)](https://modelcontextprotocol.io/)
@@ -86,20 +87,29 @@ Once enabled, the API will be available at `http://localhost:23119/api/`
 ### Step 1: Install
 
 ```bash
-uv tool install "git+https://github.com/xmruuu/zotero-mcp-lite.git"
+uv tool install zotero-mcp-lite
+```
+
+Or with pip:
+
+```bash
+pip install zotero-mcp-lite
 ```
 
 <details>
-<summary>Alternative: From source or direct run</summary>
+<summary>Alternative: Install from GitHub or source</summary>
 
 ```bash
+# From GitHub (latest development version)
+uv tool install "git+https://github.com/xmruuu/zotero-mcp-lite.git"
+
 # From source (for development)
 git clone https://github.com/xmruuu/zotero-mcp-lite.git
 cd zotero-mcp-lite && uv sync
 uv run zotero-mcp setup
 
-# Direct run (no install)
-uvx --from "git+https://github.com/xmruuu/zotero-mcp-lite.git" zotero-mcp serve
+# Direct run without install
+uvx zotero-mcp-lite serve
 ```
 </details>
 
@@ -148,7 +158,7 @@ That's it! You're ready to use Zotero with AI assistants.
 
 - `zotero_create_note` - Create note with full formatting support (tables, lists, line breaks)
 
-### 4 Research Prompts
+### 4 Research Skills (MCP Prompts)
 
 Pre-defined workflows that guide AI through common academic tasks:
 
@@ -164,8 +174,8 @@ flowchart LR
     D -.- D1["Export citations"]
 ```
 
-| Prompt | Use Case | What It Does |
-|--------|----------|--------------|
+| Skill | Use Case | What It Does |
+|-------|----------|--------------|
 | `knowledge_discovery(query)` | Explore a topic | Searches titles AND your annotations |
 | `literature_review(item_key)` | Deep-dive one paper | Structured analysis from annotations or full text |
 | `comparative_review(item_keys)` | Compare papers | Table-rich synthesis with insights |
@@ -176,7 +186,9 @@ flowchart LR
 - **Dual-mode analysis**: Works with or without user annotations
 - **Full formatting preserved**: Tables, line breaks, and lists write correctly to Zotero
 - **Fully customizable**: Edit prompt files to match your workflow
-- See [Customizing Prompts](#customizing-prompts) for details
+- See [Customizing Skills](#customizing-skills) for details
+
+> **For Claude Desktop Users:** These 4 MCP Prompts automatically become powerful Skills in Claude. Simply ask Claude to help with literature review, paper comparison, or bibliography export - it will invoke the appropriate skill with your Zotero library.
 
 ## Advanced
 
@@ -198,7 +210,10 @@ zotero-mcp serve --transport sse --port 8000
 ### Environment Variables
 
 ```bash
-# Custom Zotero data directory
+# Direct path to Zotero database (most specific)
+export ZOTERO_DATABASE_PATH=/path/to/zotero.sqlite
+
+# Or specify Zotero data directory (will find database automatically)
 export ZOTERO_DATA_DIR=/path/to/Zotero
 
 # Group libraries
@@ -230,16 +245,16 @@ Automatically detects Zotero data directory on Windows, macOS, and Linux.
 | "Database is locked" | Normal when Zotero is running; API tools still work |
 | General diagnostics | Run `zotero-mcp setup` |
 
-## Customizing Prompts
+## Customizing Skills
 
 Prompts are fully customizable. Copy from the package defaults and edit:
 
 ```
 ~/.zotero-mcp/prompts/
-├── literature_review.md      # Single paper analysis prompt
-├── comparative_review.md     # Multi-paper comparison prompt
-├── knowledge_discovery.md    # Topic exploration prompt
-└── bibliography_export.md    # Citation export prompt
+├── literature_review.md      # Single paper analysis skill
+├── comparative_review.md     # Multi-paper comparison skill
+├── knowledge_discovery.md    # Topic exploration skill
+└── bibliography_export.md    # Citation export skill
 ```
 
 **Loading order:** User files (`~/.zotero-mcp/prompts/`) take priority over package defaults.

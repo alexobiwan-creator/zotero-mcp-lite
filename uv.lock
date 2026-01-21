@@ -2151,11 +2151,13 @@ wheels = [
 
 [[package]]
 name = "zotero-mcp-lite"
+version = "0.1.2"
 source = { editable = "." }
 dependencies = [
     { name = "fastmcp" },
     { name = "httpx" },
     { name = "mistune" },
+    { name = "packaging" },
     { name = "pymupdf" },
     { name = "python-dotenv" },
     { name = "pyzotero" },
@@ -2175,6 +2177,7 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.24.0" },
     { name = "isort", marker = "extra == 'dev'", specifier = ">=5.12.0" },
     { name = "mistune", specifier = ">=3.0.0" },
+    { name = "packaging", specifier = ">=23.0" },
     { name = "pymupdf", specifier = ">=1.24.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0.0" },
     { name = "python-dotenv", specifier = ">=1.0.0" },
