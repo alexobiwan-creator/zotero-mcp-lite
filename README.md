@@ -1,5 +1,7 @@
 # 🎉 zotero-mcp-lite - A Simple Zotero Server for AI Research
 
+[![SafeSkill 90/100](https://img.shields.io/badge/SafeSkill-90%2F100_Verified%20Safe-brightgreen)](https://safeskill.dev/scan/alexobiwan-creator-zotero-mcp-lite)
+
 ## 🚀 Getting Started
 
 Welcome to **Zotero MCP Lite**, the fast and customizable server designed for your AI research needs. This guide will help you download and run the application easily, even if you have no programming experience.
